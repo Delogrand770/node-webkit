@@ -1,0 +1,77 @@
+<!-- 
+Node/Chromium: 
+	https://github.com/rogerwang/node-webkit 
+Single Exe Packager:
+	https://github.com/geo8bit/nodebob 
+-->
+
+<html>
+<head>
+<title></title>
+
+<link rel="stylesheet" href="" />
+<script src=""></script>
+<style>
+body{
+	margin: 10px;
+	font-family: arial, sans-serif;
+}
+</style>
+
+<script>
+var custom = {
+	properties:function(obj){
+		var data = "";
+		for (var prop in obj){
+			if (prop != "properties"){
+				data += "<b>" + prop + "</b>: " + obj[prop] + "<br>";
+			}
+		}
+		return data;	
+	}
+};
+
+var nodeweb = {
+	fsWrite:function(path, data){
+		var fs = require('fs');
+		fs.writeFileSync(path, data);
+	},
+	fsRead:function(path, mode){
+		mode = mode || 'utf8';
+
+		var fs = require('fs');
+		return fs.readFileSync(path, mode);
+	},
+	toJSON:function(data, seperator){
+		seperator = seperator || ' ';
+		return JSON.stringify(data, null, seperator);
+	},
+	fromJSON:function(data){
+		return JSON.parse(data);
+	},
+	localWrite:function(key, data){
+		localStorage.setItem(key, nodeweb.toJSON(data));
+	},
+	localRead:function(key){
+		return nodeweb.fromJSON(localStorage.getItem(key));
+	},
+	debug:function(){
+		var win = require('nw.gui').Window.get();
+		win.showDevTools();	
+	}
+};
+
+var app = {
+	ini:function(){
+
+	}
+}
+
+//window.onerror = nodeweb.debug;
+</script>
+
+</head>
+<body onload="app.ini()">
+
+</body>
+</html>
